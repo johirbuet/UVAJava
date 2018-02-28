@@ -42,7 +42,7 @@ public class UVA10004 {
 		color[s] = 1;
 		q.add(s);
 		while(!q.isEmpty()) {
-			int u =q.poll();
+			int u = q.poll();
 			if(graph[u][u] == 1) {
 				return false; 
 			}
@@ -54,8 +54,6 @@ public class UVA10004 {
 					return false;
 				}
 			}
-			
-			
 		}
 		return true;
 	}
