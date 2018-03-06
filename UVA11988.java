@@ -25,4 +25,5 @@ public class UVA11988 {
 		sc.close();
 	}
 	
+	
 }
