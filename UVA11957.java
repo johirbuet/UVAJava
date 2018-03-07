@@ -6,6 +6,7 @@ public class UVA11957 {
 		int c = 1;
 		while(sc.hasNextInt()) {
 			int n = sc.nextInt();
+			if ( n == 0) break;
 			int max = n/2;
 			System.out.printf("Case %d: %d\n",c++,max);
 		}
