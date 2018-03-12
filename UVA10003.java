@@ -28,7 +28,7 @@ public class UVA10003 {
 					}
 				}
 			}
-			System.out.println("The minimum cutting is "+cost[0][N+1]);
+			System.out.println("The minimum cutting is "+cost[0][N+1]+".");
 			
 		}
 		sc.close();
