@@ -24,7 +24,7 @@ public class UVA10911 {
 				Member b = pq.poll();
 				sum += Math.abs(Math.sqrt((b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y)));
 			}
-			System.out.println("Case "+t+": "+sum);
+			System.out.printf("Case %c: %.2f\n",t,sum);
 			t++;
 		}
 		sc.close();
@@ -36,7 +36,6 @@ public class UVA10911 {
 		public Member(int x, int y) {
 			this.x = x;
 			this.y = y;
-			distance = Math.sqrt(this.x*this.x + this.y*this.y);
 		}
 		@Override
 		public int compareTo(Member m) {
