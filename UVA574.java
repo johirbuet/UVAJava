@@ -44,7 +44,7 @@ public class UVA574 {
 			  for(int i = start; i< A.length;i++) {
 				  if( i > start && A[i-1] == A[i]) continue;
 				  list.add(A[i]);
-				  backtrack(target - A[i], i +1 , A, list, result);
+				  backtrack(target - A[i], i + 1 , A, list, result);
 				  list.remove(list.size() - 1);
 			  }
 		  }
