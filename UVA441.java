@@ -33,7 +33,6 @@ public class UVA441 {
 				}
 				System.out.println();
 			}
-			//System.out.println();
 			}
 		sc.close();
 	}
