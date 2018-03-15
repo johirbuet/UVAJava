@@ -21,6 +21,7 @@ public class UVA11770 {
 				int s = sc.nextInt();
 				int f = sc.nextInt();
 				graph[s][f] = 1;
+				graph[f][s] = 1;
 			}
 			
 			int cn = cn(graph);
@@ -35,7 +36,7 @@ public class UVA11770 {
 		int N = graph.length - 1;
 		int count = 0;
 		Set<Integer> nodes = new HashSet<>();
-		for(int i =1; i<= N; i++) {
+		for(int i = 2; i<= N; i++) {
 			nodes.add(i);
 		}
 		while(!qu.isEmpty()) {
@@ -50,7 +51,6 @@ public class UVA11770 {
 				count++;
 				qu.add(nodes.iterator().next());
 			}
-			
 		}
 		count++;
 		return count;
