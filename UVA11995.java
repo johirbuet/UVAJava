@@ -4,6 +4,10 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
+/*
+ *
+
+ */
 
 public class UVA11995 {
 	public static void main(String[] args) {
@@ -21,13 +25,20 @@ public class UVA11995 {
 				int c = sc.nextInt();
 				int x = sc.nextInt();
 				if( c  == 1) {
-					if(bpq) pq.offer(x);
-					if(bqu) qu.offer(x);
-					if(bstack) stack.add(x);
+					if(bpq) {
+						pq.offer(x);					
+						}
+					if(bqu) {
+						qu.offer(x);
+					}
+					if(bstack) {
+						stack.add(x);
+					}
 				}else {
+					
 					if(bpq && !pq.isEmpty()) {
-						int y = pq.poll();
-						if( y != x) {
+						int y1 = pq.poll();
+						if( y1 != x) {
 							bpq = false;
 						}
 					}else {
@@ -35,8 +46,8 @@ public class UVA11995 {
 					}
 					
 					if(bstack && !stack.isEmpty()) {
-						int y = stack.pop();
-						if( x!= y) {
+						int y2 = stack.pop();
+						if( x != y2) {
 							bstack = false;
 						}
 					}else {
@@ -44,12 +55,12 @@ public class UVA11995 {
 					}
 					
 					if(bqu && !qu.isEmpty()) {
-						int y = qu.poll();
-						if( y != x) {
+						int y3 = qu.poll();
+						if( y3 != x) {
 							bqu = false;
 						}
 					}else {
-						bpq = false;
+						bqu = false;
 					}
 				}
 			}
