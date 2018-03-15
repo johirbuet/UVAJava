@@ -22,7 +22,6 @@ public class UVA12036 {
 			if(max > N) {
 				ok = false;
 			}
-			//System.out.println(max + " "+N+" "+ok);
 			if(ok) {
 				System.out.printf("Case %d: %s\n",t,"yes");
 			}else {
