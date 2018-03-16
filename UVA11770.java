@@ -1,9 +1,11 @@
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 public class UVA11770 {
 	public static void main(String[] args) {
@@ -21,38 +23,38 @@ public class UVA11770 {
 				int s = sc.nextInt();
 				int f = sc.nextInt();
 				graph[s][f] = 1;
-				graph[f][s] = 1;
 			}
 			
-			int cn = cn(graph);
+			int cn = 0;
+			boolean [] visited = new boolean[N+1];
+			Stack<Integer> stack = new Stack<>();
+			for(int V =1 ; V <= N; V++) {
+				if(!visited[V]) {
+					dfs(V, graph, visited);
+					stack.push(V);
+				}
+			}
+			for(int j =0;j<N+1;j++) visited[j] = false;
+			while(!stack.isEmpty()) {
+				int u = stack.pop();
+				if(!visited[u]) {
+					dfs(u, graph, visited);
+					cn++;
+				}
+				
+			}
 			System.out.printf("Case %d: %d\n",i,cn);
 		}
 		sc.close();
 	}
-	
-	public static int cn(int [][] graph) {
-		Queue<Integer> qu = new LinkedList<>();
-		qu.add(1);
-		int N = graph.length - 1;
-		int count = 0;
-		Set<Integer> nodes = new HashSet<>();
-		for(int i = 2; i<= N; i++) {
-			nodes.add(i);
-		}
-		while(!qu.isEmpty()) {
-			int V = qu.poll();
-			nodes.remove(V);
-			for(int i = 1;i<= N; i++) {
-				if(graph[V][i] == 1 && nodes.contains(i)) {
-					qu.add(i);
-				}
-			}
-			if(qu.isEmpty() && nodes.size() != 0) {
-				count++;
-				qu.add(nodes.iterator().next());
+	public static void dfs(int u,int [][] graph,boolean [] visited) {
+		if(visited[u]) return;
+		visited[u] = true;
+		for(int v =1; v< graph.length;v++) {
+			if(graph[u][v] == 1 && !visited[v]) {
+				dfs(v, graph, visited);
 			}
 		}
-		count++;
-		return count;
 	}
+	
 }
