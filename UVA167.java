@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,8 +14,6 @@ public class UVA167 {
 				}
 			}
 			List<Queen> queens = new ArrayList<>();
-			int r = 0;
-			int c = 0;
 			int q = 0;
 			int max = 0;
 			max = backtrack(q, B, queens, max);
@@ -34,7 +31,6 @@ public class UVA167 {
 		}
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return "("+this.x+", "+this.y+")";
 		}
 	}
