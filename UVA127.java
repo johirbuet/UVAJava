@@ -14,7 +14,6 @@ public class UVA127 {
 				break;
 			}
 			String B = sc.readLine();
-			// System.out.println(A);
 			List<Stack<String>> piles = new ArrayList<>();
 			for (int i = 0; i < 52; i++) {
 				piles.add(new Stack<String>());
