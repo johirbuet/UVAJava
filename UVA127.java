@@ -1,17 +1,19 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Stack;
 
 public class UVA127 {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		while (sc.hasNextLine()) {
-			String A = sc.nextLine();
+	public static void main(String[] args) throws IOException {
+		BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+		while (true) {
+			String A = sc.readLine();
 			if (A.equals("#")) {
 				break;
 			}
-			String B = sc.nextLine();
+			String B = sc.readLine();
 			// System.out.println(A);
 			List<Stack<String>> piles = new ArrayList<>();
 			for (int i = 0; i < 52; i++) {
@@ -54,14 +56,10 @@ public class UVA127 {
 							i = i - 1;
 						}
 					}
-					if (piles.get(i).size() == 0) {
-						piles.remove(i);
-						//i = i - 1;
-					} else {
-						if ((i >= 1 && match(piles.get(i).peek(), piles.get(i - 1).peek()))
-								|| (i >= 3 && match(piles.get(i).peek(), piles.get(i - 3).peek()))) {
-							i--;
-						}
+					
+					if ((i >= 1 && match(piles.get(i).peek(), piles.get(i - 1).peek()))
+							|| (i >= 3 && match(piles.get(i).peek(), piles.get(i - 3).peek()))) {
+						i--;
 					}
 					if (i == piles.size() - 1) {
 						ended = true;
