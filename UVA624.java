@@ -17,23 +17,16 @@ public class UVA624 {
 			int mindiff = Integer.MAX_VALUE;
 			int minindex = -1;
 			int closesum = 0;
-			int minlen = Integer.MAX_VALUE;
 			for(int i =0;i< res.size();i++) {
 				List<Integer> cur = res.get(i);
 				int sum = 0;
 				for (Integer integer : cur) {
 					sum += integer;
 				}
-				/*if(Math.abs(sum - S) == mindiff && minlen > cur.size()) {
-					minindex = i;
-					minlen = cur.size();
-					closesum = sum;
-				}*/
 				 if (S >= sum && Math.abs(sum - S) < mindiff) {
 					mindiff = Math.abs(sum - S);
 					minindex = i;
 					closesum = sum;
-					minlen = cur.size();
 				}
 			}
 			for(int i =0; i< res.get(minindex).size();i++) {
