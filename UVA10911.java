@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.math.*;
 import java.util.*;
 
+//https://codediscuss.wordpress.com/2015/01/19/uva-10911-forming-quiz-teams-minimum-cost-perfect-matching/
 public class UVA10911 {
 	static int Max = 10000;
 	static double[] DPMemo = new double[1 << 16];
