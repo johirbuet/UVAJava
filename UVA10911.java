@@ -1,45 +1,63 @@
-import java.util.PriorityQueue;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.*;
+import java.util.*;
 
 public class UVA10911 {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int t = 1;
-		while(sc.hasNextLine()) {
-			int T = Integer.parseInt(sc.nextLine());
-			if ( T == 0) {
+	static int Max = 10000;
+	static double[] DPMemo = new double[1 << 16];
+	static double[][] Distance = new double[Max][Max];
+	static int X;
+	static int Y;
+	static int NumberOfTeams;
+
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader Input = new BufferedReader(new InputStreamReader(System.in));
+		int Cases = 1;
+
+		while (true) {
+			NumberOfTeams = Integer.parseInt(Input.readLine());
+			if (NumberOfTeams == 0)
 				break;
+
+			int[][] XY = new int[2 * NumberOfTeams][2];
+
+			for (int i = 0; i < 2 * NumberOfTeams; i++) {
+				String[] Line = Input.readLine().split(" ");
+				X = Integer.parseInt(Line[1]);
+				Y = Integer.parseInt(Line[2]);
+				XY[i][0] = X;
+				XY[i][1] = Y;
 			}
-			PriorityQueue<Member> pq = new PriorityQueue<>();
-			for(int i =0; i< 2*T; i++) {
-				String [] strs = sc.nextLine().split(" ");
-				int x = Integer.parseInt(strs[1]);
-				int y = Integer.parseInt(strs[2]);
-				Member m = new Member(x, y);
-				pq.add(m);
+			for (int i = 0; i < 2 * NumberOfTeams; i++) {
+				for (int j = i + 1; j < 2 * NumberOfTeams; j++) {
+					Distance[i][j] = Math.sqrt((XY[i][0] - XY[j][0]) * (XY[i][0] - XY[j][0])
+							+ (XY[i][1] - XY[j][1]) * (XY[i][1] - XY[j][1]));
+				}
 			}
-			double sum = 0;
-			while(!pq.isEmpty()) {
-				Member a = pq.poll();
-				Member b = pq.poll();
-				sum += Math.abs(Math.sqrt((b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y)));
-			}
-			System.out.printf("Case %c: %.2f\n",t,sum);
-			t++;
+			Arrays.fill(DPMemo, -1);
+			BigDecimal Rounding = new BigDecimal(Solve(0));
+
+			System.out.println("Case " + (Cases++) + ": " + Rounding.setScale(2, BigDecimal.ROUND_HALF_UP));
+
 		}
-		sc.close();
+
 	}
-	static class Member implements Comparable<Member>{
-		int x;
-		int y;
-		double distance;
-		public Member(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		@Override
-		public int compareTo(Member m) {
-			return Double.compare(this.distance, m.distance);
-		}
+
+	private static double Solve(int Mask) {
+		if (Mask == (1 << 2 * NumberOfTeams) - 1)
+			return 0;
+		if (DPMemo[Mask] != -1)
+			return DPMemo[Mask];
+
+		DPMemo[Mask] = 1 << 30;
+		for (int i = 0; i < NumberOfTeams * 2; i++)
+			if ((Mask & (1 << i)) == 0)
+				for (int j = i + 1; j < NumberOfTeams * 2; j++)
+					if ((Mask & (1 << j)) == 0)
+						DPMemo[Mask] = Math.min(DPMemo[Mask], Distance[i][j] + Solve(Mask | (1 << i) | (1 << j)));
+		return DPMemo[Mask];
 	}
+
 }
