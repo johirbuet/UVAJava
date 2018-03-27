@@ -10,9 +10,9 @@ public class UVA837 {
 			PriorityQueue<Point> pq = new PriorityQueue<>();
 			for(int j =0; j< nl;j++) {
 				double x1 = sc.nextDouble();
-				double y1 = sc.nextDouble();
+				double y1 = sc.nextDouble(); // Not used 
 				double x2 = sc.nextDouble();
-				double y2 = sc.nextDouble();
+				double y2 = sc.nextDouble(); // Not used
 				double r = sc.nextDouble();
 				if(x1 > x2) {
 					double temp = x1;
@@ -65,7 +65,6 @@ public class UVA837 {
 		}
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return x + " "+r+" "+start;
 		}
 	}
