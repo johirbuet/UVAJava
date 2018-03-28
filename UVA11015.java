@@ -23,7 +23,6 @@ public class UVA11015 {
 			for(int i =0; i< n+1;i++) {
 				for(int j=0;j<n+1;j++) {
 					graph[i][j] = Integer.MAX_VALUE/2;
-					graph[j][i] = Integer.MAX_VALUE/2; 
 				}
 			}
 			for(int i = 0; i<m;i++) {
