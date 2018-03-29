@@ -24,10 +24,8 @@ public class UVA11512 {
 				}
 				if(res.length() > max.length()) {
 					max = res;
-					count = 2;
 				}
 			}
-			count = 0;
 			for(int j =0; j < arr.length && max.length() > 0;j++) {
 				if(arr[j].startsWith(max)) {
 					count++;
