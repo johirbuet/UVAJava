@@ -15,6 +15,7 @@ public class UVA10130 {
 				for(int w = 30; w>=W[i];w--) {
 					dp[w] = Math.max(dp[w], dp[w-W[i]]+P[i]);
 				}
+				
 			}
 			int G = sc.nextInt();
 			int [] gw = new int[G];
