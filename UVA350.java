@@ -26,7 +26,6 @@ public class UVA350 {
 					break;
 				}
 				seen.put(L,index);
-				
 			}
 			System.out.printf("Case %d: %d\n",c++,count);
 		}
