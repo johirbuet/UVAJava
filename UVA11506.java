@@ -4,48 +4,57 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UVA11506 {
+	static boolean [] visited;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		while(sc.hasNextInt()) {
+		while (sc.hasNextInt()) {
 			int M = sc.nextInt();
 			int W = sc.nextInt();
-			List<Machine> machines = new ArrayList<>();
-			machines.add(new Machine(1, 0));
-			machines.add(new Machine(M, Integer.MAX_VALUE));
-			int [][] graph = new int[M+1][M + M];
-			for(int i =0; i< M -2; i++) {
-				int m = sc.nextInt();
+			if( M == 0 && W ==0) break;
+			int[][] graph = new int[M + M ][M + M ];
+			visited = new boolean[2*M];
+			graph[0][M] = graph[M - 1] [M + M -1] = Integer.MAX_VALUE;
+			for (int i = 0; i < M - 2; i++) {
+				int m = sc.nextInt() - 1;
 				int c = sc.nextInt();
-				machines.add(new Machine(m, c));
 				graph[m][M + m] = c;
 			}
-			for(int i =0; i < W; i++) {
-				int u = sc.nextInt();
-				int v = sc.nextInt();
+			for (int i = 0; i < W; i++) {
+				int u = sc.nextInt() - 1;
+				int v = sc.nextInt() - 1;
 				int c = sc.nextInt();
-				graph[u][v] = c;
+				graph[u + M][v] = graph[v + M][u] = c;
 			}
-			Collections.sort(machines);
-			
+			int f = fordfulkerson(graph, 0, 2*M - 1);
+			System.out.println(f);
 		}
 		sc.close();
 	}
-	public static void fordfulkerson(int [][] graph,int s,int t) {
-		
-	}
-	public static void bfs(int [][] graph,int [] parent ) {
-		
-	}
 	
-	static class Machine implements Comparable<Machine> {
-		int id,c;
-		public Machine(int id,int c) {
-			this.id = id;
-			this.c = c;
+	public static int augpath(int [][] graph,int s,int t,int mf) {
+		visited[s] = true;
+		if(s == t) return mf;
+		for(int i =0; i < graph.length;i++) {
+			if(!visited[i] && graph[s][i] > 0) {
+				int flow = augpath(graph, i, t, mf < graph[s][i]?mf: graph[s][i]);
+				if(flow > 0) {
+					graph[s][i] -= flow;
+					graph[i][s] += flow;
+					return flow;
+				}
+			}
 		}
-		@Override
-		public int compareTo(Machine o) {
-			return this.id - o.id;
+		return 0;
+	}
+	public static int fordfulkerson(int[][] graph, int s, int t) {
+		int ret = 0;
+		while(true) {
+			for(int i =0; i< graph.length;i++) visited[i] = false;
+			int flow = augpath(graph, s, t, Integer.MAX_VALUE);
+			if(flow == 0) return ret;
+			ret += flow;
 		}
 	}
+
+	
 }
