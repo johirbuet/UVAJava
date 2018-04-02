@@ -47,6 +47,7 @@ public class UVA11635 {
 				System.out.print(d[i]+ " ");
 			}
 		}
+		sc.close();
 	}
 	
 	static class Vertex implements Comparable<Vertex> {
@@ -68,7 +69,6 @@ public class UVA11635 {
 			if( i == s) continue;
 			d[i] = Integer.MAX_VALUE;
 		}
-		//Set<Integer> S = new HashSet<>();
 		PriorityQueue<Vertex> pq = new PriorityQueue<>();
 		pq.add(new Vertex(s,0));
 		while(!pq.isEmpty()) {
@@ -85,15 +85,5 @@ public class UVA11635 {
 		}
 		
 	}
-	public static int[][] floyd_warshall(int [][] W) {
-		int N = W[0].length;
-		for(int k =0; k<N;k++) {
-			for(int i =0; i< N;i++) {
-				for(int j=0; j<N;j++) {
-					W[i][j] = Math.min(W[i][j], W[i][k]+ W[k][j]);
-				}
-			}
-		}
-		return W;
-	}
+	
 }

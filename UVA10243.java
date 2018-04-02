@@ -55,7 +55,6 @@ public class UVA10243 {
 		}
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return "("+to+", "+from+")";
 		}
 	}
