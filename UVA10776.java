@@ -31,7 +31,7 @@ public class UVA10776 {
 				take[j] = true;
 				backtrack(j + 1, A, take, res + A[j], r);
 				take[j] = false;
-				while(j < A.length -1 && A[j] == A[j+1]) j++;
+				while(j < A.length - 1 && A[j] == A[j+1]) j++;
 			}
 		}
 	}
