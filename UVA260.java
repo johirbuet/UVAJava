@@ -16,45 +16,38 @@ public class UVA260 {
 			}
 			boolean [][] visited = new boolean[n][n];
 			
-			int W = 0;
-			int B = 0;
+			char winner =' ';
 			for(int i =0; i< n; i++) {
-				for(int j =0; j < n; j++) {
-					if(!visited[i][j]) {
-						int count = visit(graph, visited, 0, i, j, graph[i][j]);
-						//System.out.println(count);
-						if(graph[i][j] == 'w') {
-							W = Math.max(W, count);
+					if(!visited[i][0] && graph[i][0] == 'w') {
+						boolean count = visit(graph, visited, false, i, 0, graph[i][0]);
+						if(count) {
+							winner = Character.toUpperCase(graph[i][0]);
 						}
-						else {
-							B = Math.max(B, count);
-						}
-					}
 				}
 			}
-			if(W > B) {
-				System.out.printf("%d W\n",c++);
-			}else {
-				System.out.printf("%d B\n",c++);
-			}
+			if (winner == ' ') winner = 'B';
+			System.out.printf("%d %c\n",c++,winner);
 			
 		}
 		sc.close();
 	}
-	public static int visit(char [][] graph, boolean [][] visited, int count,int x,int y,char c) {
+	public static boolean visit(char [][] graph, boolean [][] visited, boolean count,int x,int y,char c) {
 		visited[x][y] = true;
 		if(graph[x][y] != c) {
-			return count;
+			return false;
 		}
 		if( x < 0 || y < 0 || x >= graph.length || y >= graph.length) {
-			return count;
+			return false;
+		}
+		if(y == graph.length - 1) {
+			return true;
 		}
 		for(int [] d : dir) {
 			int x1 = x + d[0];
 			int y1 = y + d[1];
 			if(x1 >= 0 && y1 >= 0 && x1 <= graph.length - 1 && y1 <= graph.length - 1 && 
 					graph[x1][y1] == c && !visited[x1][y1]) {
-				count += visit(graph, visited, count + 1, x1, y1, c);
+				count = count || visit(graph, visited, count, x1, y1, c);
 			}
 		}
 		return count;
