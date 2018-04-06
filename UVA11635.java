@@ -1,89 +1,123 @@
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Scanner;
-import java.util.Set;
+import java.util.Vector;
+
+class IntegerPair implements Comparable<IntegerPair>{
+	public IntegerPair(int o, int t){
+		first = o; 
+		second = t;
+	}
+	public int first,second;
+	@Override
+	public int compareTo(IntegerPair arg0) {
+		if (((IntegerPair)arg0).first == this.first)
+			return this.second - ((IntegerPair)arg0).second;
+		else
+			return this.first - ((IntegerPair)arg0).first;
+	}
+}
 
 public class UVA11635 {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		while(sc.hasNextInt()) {
-			int N = sc.nextInt();
-			if(N == 0 ) {
-				break;
-			}
-			int h = sc.nextInt();
-			boolean [] H = new boolean[N];
-			for(int i = 0; i< h; i++) {
-				H[sc.nextInt() - 1] = true;
-			}
-			H[0] = true;
-			H[N -1] = true;
-			
-			int R = sc.nextInt();
-			int [][] W = new int[N][N];
-			for(int i = 0; i < N;i++) {
-				for(int j =0; j< N;j++) {
-					if(i==j) {
-						W[i][j] = 0;
-					}
-					else {
-						W[i][j] = Integer.MAX_VALUE;
-					}
-				}
-			}
-			
-			for(int i = 0; i< R; i++) {
-				int s = sc.nextInt();
-				int d = sc.nextInt();
-				int t = sc.nextInt();
-				W[s-1][d-1] = t;
-				W[d-1][s-1] = t;
-			}
-			int [] d =new int[N];
-			dikstra(0, d, W);
-			for(int i = 0; i< N; i++) {
-				System.out.print(d[i]+ " ");
-			}
-		}
-		sc.close();
+	static void run(){
+		Scanner scans = new Scanner(System.in);
+		int V,E,hotelcount;
+	    while(true){
+	        V = scans.nextInt();
+	        if (V == 0)
+	           break;
+	        Vector<Vector<IntegerPair>> adjList = new Vector<Vector<IntegerPair>>();
+	        for (int i = 0; i < V;i++)
+	        	adjList.add(new Vector<IntegerPair>());
+	        
+	        hotelcount = scans.nextInt();
+	        hotelcount += 2;
+	        int[] hotels = new int[hotelcount+2];
+	        
+	        for (int i = 0; i < hotelcount-2; i++){    
+	            int input = scans.nextInt();
+	            hotels[i] = input-1;
+	        }
+	        hotels[hotelcount-2] = 0;
+	        hotels[hotelcount-1] = V-1;
+
+	        E = scans.nextInt();
+	        for (int i = 0; i < E; i++){
+	            int from = scans.nextInt();
+	            int to = scans.nextInt();
+	            int amt = scans.nextInt();
+	            from--;
+	            to--;
+	            adjList.get(from).add(new IntegerPair(to,amt));
+	            adjList.get(to).add(new IntegerPair(from,amt));
+	        }
+	        
+	        Vector<Vector<Integer>> adjList2 = new Vector<Vector<Integer>>();
+	        for (int i = 0; i < V;i++)
+	        	adjList2.add(new Vector<Integer>());
+	        
+	        for (int h = 0; h < hotelcount; h++){
+	            int[] weights = new int[V];
+	            for (int i = 0; i < V; i++)
+	                weights[i] = 100000000;
+	            int source = hotels[h];
+	            weights[source] = 0;
+	            PriorityQueue<IntegerPair> Q = new PriorityQueue<IntegerPair>();
+	            Q.add(new IntegerPair(0, source));
+	            
+	            while (!Q.isEmpty()){
+	                IntegerPair cur = Q.poll();
+	               	if (cur.first > weights[cur.second])
+	               		continue;
+	                if (cur.first > 600)
+	                   break;         	
+	                for (int i = 0; i < adjList.get(cur.second).size(); i++) {
+	                    int next = adjList.get(cur.second).get(i).first;
+	                    int later = cur.first + adjList.get(cur.second).get(i).second;
+	                	if (later < weights[next]) {
+	                		weights[next] = later ;
+	                		Q.add(new IntegerPair(weights[next], next));
+	                	}
+	                }
+	            }
+	            for (int i = h+1; i < hotelcount; i++){
+	                if (weights[hotels[i]] < 601 && hotels[i] != source){
+	                   adjList2.get(source).add(hotels[i]);
+	                   adjList2.get(hotels[i]).add(source); 
+	                }
+	            }
+	        }
+
+	        boolean[] visited = new boolean[V];
+	        Arrays.fill(visited, false);
+	        LinkedList<IntegerPair> Qbfs = new LinkedList<IntegerPair>();
+	        int source = 0;
+	        Qbfs.add(new IntegerPair(0,source));
+	        
+	        int ans = -1;
+	        while (!Qbfs.isEmpty()){
+	            IntegerPair cur = Qbfs.pollFirst();//System.out.println((cur.second+1)+ " "+cur.first);
+	            if (visited[cur.second])
+	               continue;
+	            visited[cur.second] = true;
+	            if (cur.second == V-1){
+	               ans = cur.first-1;
+	               break;
+	            }
+
+	            for (int i = 0; i < adjList2.get(cur.second).size(); i++) {
+	                int next = adjList2.get(cur.second).get(i);
+	                if (!visited[next])              
+	                   Qbfs.add(new IntegerPair(cur.first+1,next));
+	            }
+	        }
+	        
+	        System.out.println(ans);
+	    }
 	}
 	
-	static class Vertex implements Comparable<Vertex> {
-		int V;
-		int d;
-		public Vertex(int V,int d) {
-			this.V = V;
-			this.d = d;
-		}
-		@Override
-		public int compareTo(Vertex o) {
-			return this.d - o.d;
-		}
-		
+	public static void main(String[] args){
+		run();
 	}
-	public static void dikstra(int s,int [] d, int [][] W) {
-		d[s] = 0;
-		for(int i =0; i<d.length;i++) {
-			if( i == s) continue;
-			d[i] = Integer.MAX_VALUE;
-		}
-		PriorityQueue<Vertex> pq = new PriorityQueue<>();
-		pq.add(new Vertex(s,0));
-		while(!pq.isEmpty()) {
-			Vertex u = pq.poll();
-			for(int i= 0; i<d.length;i++) {
-				if(W[u.V][i] != Integer.MAX_VALUE) {
-					int w = W[u.V][i] + d[u.V];
-					if(w < d[i]) {
-						d[i] = w;
-						pq.add(new Vertex(i, w));
-					}
-				}
-			}
-		}
-		
-	}
-	
 }
