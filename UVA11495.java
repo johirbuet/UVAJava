@@ -1,58 +1,77 @@
 import java.util.Scanner;
 
-public class UVA11495 {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		while(sc.hasNextInt()) {
-			int N = sc.nextInt();
-			if( N ==0) break;
-			int [] A = new int[N];
-			for(int i =0; i< N; i++) {
-				A[i] = sc.nextInt();
-			}
-			int inv = mergeSort(0, N-1, A, new int[N]);
-			if(inv %2 == 1) {
-				System.out.println("Marcelo");
-			}else {
-				System.out.println("Carlos");
-			}
-		}
-		sc.close();
-	}
-	
-	public static int mergeSort(int L,int R,int [] A,int[] temp) {
-		int inv = 0;
-		if(L < R) {
-			int mid = (L + R)/2;
-			inv += mergeSort(L, mid, A, temp);
-			inv += mergeSort(mid + 1, R, A, temp);
-			inv += merge(L, R, mid + 1, A, temp);
-		}
-		return inv;
-	}
-	
-	public static int merge(int L, int R, int mid, int [] A,int [] temp) {
-		int inv = 0;
-		int i = L;
-		int j = mid;
-		int k = L;
-		while( i < mid && j <= R) {
-			if(A[i] <= A[j]) {
-				temp[k++] = A[i++];
-			}else {
-				temp[k++] = A[j++];
-				inv += mid - i;
-			}
-		}
-		while( i < mid) {
-			A[k++] =temp[i++];
-		}
-		while( j <= R) {
-			A[k++] = temp[j++];
-		}
-		for(i =L; i<= R; i++) {
-			A[i] = temp[i];
-		}
-		return inv;
-	}
+class UVA11495 {
+    private final int[] array = new int[100000];
+    private final int[] temp = new int[100000];
+    private int length = 0;
+    private long swaps = 0;
+
+    public void add(int c) {
+        array[length++] = c;
+    }
+
+    public void reset() {
+        length = 0;
+    }
+
+    public long getMinSwaps() {
+        swaps = 0;
+        mergeSort(0, length);
+        return swaps;
+    }
+
+    public String whoWins() {
+        return (getMinSwaps() % 2 == 0) ? "Carlos" : "Marcelo";
+    }
+
+    private void mergeSort(int left, int right) {
+        if (left <= right) {
+            int size = right - left;
+            if (size > 2) {
+                mergeSort(left, left + size / 2);
+                mergeSort(left + size / 2, right);
+                merge(left, left + size / 2, left + size / 2, right);
+            } else if (size == 2 && array[left] > array[right - 1]) {
+                temp[left] = array[left];
+                array[left] = array[right - 1];
+                array[right - 1] = temp[left];
+                swaps++;
+            }
+        }
+    }
+
+    private void merge(int li, final int liend, int ri, final int riend) {
+        int i = 0;
+        int start = li;
+        while (li < liend) {
+            if (ri == riend || array[li] <= array[ri]) {
+                temp[start + i] = array[li];
+                li++;
+            } else {
+                temp[start + i] = array[ri];
+                swaps += ri - start - i;
+                ri++;
+            }
+            i++;
+        }
+
+        for (int j = start; j < start + i; j++) {
+            array[j] = temp[j];
+        }
+    }
+
+    public static void main(String[] args) {
+    	UVA11495 m = new UVA11495();
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt();
+        while (N > 0) {
+            m.reset();
+            while (N-- > 0) {
+                m.add(in.nextInt());
+            }
+            System.out.println(m.whoWins());
+            N = in.nextInt();
+        }
+        in.close();
+    }
 }
