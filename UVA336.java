@@ -26,7 +26,7 @@ public class UVA336 {
         while (queue.size() > 0) {
             State nextState = queue.poll();
         
-            if (nextState.ttl > 0) {
+            if (nextState.ttl > 0) { 
                 for (Integer link: graph.get(nextState.node)) {
                     if (!visited.contains(link)) {
                         queue.add(new State(link, nextState.ttl-1));
